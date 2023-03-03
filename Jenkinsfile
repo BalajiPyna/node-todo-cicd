@@ -1,22 +1,22 @@
 pipeline {
-    agent { label 'node-agent' }
+    agent { label 'slave-1' }
     
     stages{
         stage('Code'){
             steps{
-                git url: 'https://github.com/LondheShubham153/node-todo-cicd.git', branch: 'master' 
+                git url: 'https://github.com/BalajiPyna/node-todo-cicd.git', branch: 'master' 
             }
         }
         stage('Build and Test'){
             steps{
-                sh 'docker build . -t trainwithshubham/node-todo-test:latest'
+                sh 'docker build . -t balajipyna/sample-docker:latest'
             }
         }
         stage('Push'){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-        	     sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                 sh 'docker push trainwithshubham/node-todo-test:latest'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerpassword', usernameVariable: 'dockerusername')]) {
+        	     sh "docker login -u ${env.dockerusername} -p ${env.dockerpassword}"
+                 sh 'docker push balajipyna/sample-docker:latest'
                 }
             }
         }
